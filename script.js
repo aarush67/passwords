@@ -81,8 +81,7 @@ async function generateAndShow(){
   const mode=modeEl.value;
   const len=parseInt(lenEl.value)||16;
   const out=mode==="chars"?generateChars(len):generatePassphrase(Math.max(3,Math.min(8,Math.round(len/4))));
-  pwEl.textContent = "•".repeat(out.length);
-  pwEl.setAttribute("data-text", out);
+  pwEl.textContent = out;
 
   // Strength
   try{
@@ -103,7 +102,7 @@ generateBtn.addEventListener("click", generateAndShow);
 
 // Copy generated
 copyBtn.addEventListener("click", async ()=>{
-  const txt=pwEl.getAttribute("data-text");
+  const txt=pwEl.textContent;
   if(!txt) return;
   await navigator.clipboard.writeText(txt);
   toast("Copied — clears in 15s");
@@ -112,7 +111,7 @@ copyBtn.addEventListener("click", async ()=>{
 
 // Export CSV
 exportBtn.addEventListener("click", ()=>{
-  const password=pwEl.getAttribute("data-text");
+  const password=pwEl.textContent;
   if(!password) return alert("Generate a password first!");
   const csvContent=`name,username,password,uri,notes,favorite\nGenerated Password,,${password},,,false`;
   const blob=new Blob([csvContent], {type:"text/csv"});
@@ -128,8 +127,7 @@ async function checkPassword(){
   const pw=checkInput.value;
   if(!pw) return alert("Enter a password");
 
-  checkPw.textContent = "•".repeat(pw.length);
-  checkPw.setAttribute("data-text", pw);
+  checkPw.textContent = pw;
 
   const z=zxcvbn(pw);
   const score=z.score;
@@ -148,7 +146,7 @@ checkBtn.addEventListener("click", checkPassword);
 
 // Copy user-entered password
 copyCheckBtn.addEventListener("click", async ()=>{
-  const txt=checkPw.getAttribute("data-text");
+  const txt=checkPw.textContent;
   if(!txt) return;
   await navigator.clipboard.writeText(txt);
   toast("Copied!");
