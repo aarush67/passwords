@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Password Hub — TechFixPro</title>
 <link rel="stylesheet" href="styles.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
@@ -15,7 +15,7 @@
   <div class="tabs">
     <button class="tab-btn active" data-tab="generate">Generate</button>
     <button class="tab-btn" data-tab="check">Check</button>
-    <button id="modeToggle">🌙</button>
+    <button id="modeToggle" title="Toggle dark/light">🌙</button>
   </div>
 
   <!-- Generate Tab -->
@@ -33,11 +33,13 @@
         <input type="number" id="length" min="4" max="64" value="16">
       </div>
     </div>
+
     <div class="buttons">
       <button id="generate">Generate</button>
       <button id="copy">Copy</button>
       <button id="exportBtn">Export CSV</button>
     </div>
+
     <div class="output">
       <div class="password-container">
         <div id="pw" class="password"></div>
@@ -54,13 +56,15 @@
     <div class="controls">
       <div class="row">
         <label for="checkInput">Enter password:</label>
-        <input type="password" id="checkInput">
+        <input type="password" id="checkInput" placeholder="Type a password to check">
       </div>
     </div>
+
     <div class="buttons">
       <button id="checkBtn">Check</button>
       <button id="copyCheckBtn">Copy</button>
     </div>
+
     <div class="output">
       <div class="password-container">
         <div id="checkPw" class="password"></div>
@@ -76,6 +80,8 @@
 
 <div id="toast"></div>
 
+<!-- big word list must come before script.js -->
+<script src="wordlist.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
