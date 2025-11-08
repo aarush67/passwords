@@ -81,7 +81,8 @@ async function generateAndShow(){
   const mode=modeEl.value;
   const len=parseInt(lenEl.value)||16;
   const out=mode==="chars"?generateChars(len):generatePassphrase(Math.max(3,Math.min(8,Math.round(len/4))));
-  pwEl.textContent=out;
+  pwEl.textContent = "•".repeat(out.length);
+  pwEl.setAttribute("data-text", out);
 
   // Strength
   try{
@@ -102,8 +103,8 @@ generateBtn.addEventListener("click", generateAndShow);
 
 // Copy generated
 copyBtn.addEventListener("click", async ()=>{
-  const txt=pwEl.textContent;
-  if(!txt||txt==="—") return;
+  const txt=pwEl.getAttribute("data-text");
+  if(!txt) return;
   await navigator.clipboard.writeText(txt);
   toast("Copied — clears in 15s");
   setTimeout(()=>{ pwEl.textContent='—'; strengthBar.style.width='0%'; strengthText.textContent='Strength: —'; pwnedInfo.textContent=''; },15000);
@@ -111,8 +112,8 @@ copyBtn.addEventListener("click", async ()=>{
 
 // Export CSV
 exportBtn.addEventListener("click", ()=>{
-  const password=pwEl.textContent;
-  if(!password||password==="—") return alert("Generate a password first!");
+  const password=pwEl.getAttribute("data-text");
+  if(!password) return alert("Generate a password first!");
   const csvContent=`name,username,password,uri,notes,favorite\nGenerated Password,,${password},,,false`;
   const blob=new Blob([csvContent], {type:"text/csv"});
   const url=URL.createObjectURL(blob);
@@ -127,7 +128,9 @@ async function checkPassword(){
   const pw=checkInput.value;
   if(!pw) return alert("Enter a password");
 
-  checkPw.textContent=pw;
+  checkPw.textContent = "•".repeat(pw.length);
+  checkPw.setAttribute("data-text", pw);
+
   const z=zxcvbn(pw);
   const score=z.score;
   checkStrengthBar.style.width=((score/4)*100)+'%';
@@ -138,7 +141,6 @@ async function checkPassword(){
   const count=await checkPwned(pw);
   checkPwnedInfo.textContent=count>0?`⚠️ Appeared in breaches ${count}`:"✅ Not found in HIBP";
 
-  // Suggestions
   suggestion.textContent=z.feedback.warning || z.feedback.suggestions.join(" ") || "No suggestions, strong password!";
 }
 
@@ -146,8 +148,8 @@ checkBtn.addEventListener("click", checkPassword);
 
 // Copy user-entered password
 copyCheckBtn.addEventListener("click", async ()=>{
-  const txt=checkPw.textContent;
-  if(!txt||txt==="—") return;
+  const txt=checkPw.getAttribute("data-text");
+  if(!txt) return;
   await navigator.clipboard.writeText(txt);
   toast("Copied!");
 });
