@@ -28,7 +28,7 @@ function generateChars(len){
 function generatePassphrase(wordsCount){
   let out=[];
   for(let i=0;i<wordsCount;i++){
-    out.push(WORDS[secureRandInt(WORDS.length)]);
+    out.push(WORDS[secureRandInt(WORDS.length)]||'word');
   }
   return out.join(" ");
 }
@@ -76,7 +76,9 @@ const checkStrengthText=document.getElementById("checkStrengthText");
 const checkPwnedInfo=document.getElementById("checkPwnedInfo");
 const suggestion=document.getElementById("suggestion");
 
-// Copy password (button or click on password)
+const modeToggle=document.getElementById("modeToggle");
+
+// Copy function
 async function copyText(el){
   const txt = el.textContent;
   if(!txt) return;
@@ -158,6 +160,12 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
     document.getElementById("generate-tab").style.display=tab==="generate"?"block":"none";
     document.getElementById("check-tab").style.display=tab==="check"?"block":"none";
   });
+});
+
+// Dark/light toggle
+modeToggle.addEventListener("click", ()=>{
+  document.body.classList.toggle("dark");
+  modeToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
 });
 
 // Initial generate
