@@ -3,62 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SafePass • Secure Password Vault</title>
+<title>SafePass • Secure Password Generator</title>
 <link rel="stylesheet" href="styles.css">
 <script src="https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js"></script>
 </head>
 <body>
 <div class="container">
   <h1>SafePass</h1>
-  <p>Generate strong passwords, check breaches, and manage a local encrypted vault.</p>
+  <p>Generate strong passwords and check if they have been breached.</p>
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="generate">Generate</button>
-    <button class="tab-btn" data-tab="vault">Vault</button>
-  </div>
-
-  <div class="tab-content" id="generate-tab">
-    <div class="controls">
-      <div class="row">
-        <label for="mode">Mode:</label>
-        <select id="mode">
-          <option value="chars">Random Characters</option>
-          <option value="passphrase">Passphrase</option>
-        </select>
-      </div>
-      <div class="row">
-        <label for="length">Length:</label>
-        <input type="number" id="length" value="16" min="8" max="128">
-      </div>
-      <div class="row buttons">
-        <button id="generate">Generate</button>
-        <button id="copy">Copy</button>
-      </div>
+  <div class="controls">
+    <div class="row">
+      <label for="mode">Mode:</label>
+      <select id="mode">
+        <option value="chars">Random Characters</option>
+        <option value="passphrase">Passphrase</option>
+      </select>
     </div>
-    <div class="output">
-      <div id="pw" class="password">—</div>
-      <div class="strength-bar"><i id="strengthBar"></i></div>
-      <div id="strengthText">Strength: —</div>
-      <div id="pwnedInfo"></div>
-      <div style="margin-top:8px;"><button id="saveVaultBtn">Save to Vault</button></div>
+    <div class="row">
+      <label for="length">Length:</label>
+      <input type="number" id="length" value="16" min="8" max="128">
+    </div>
+    <div class="row buttons">
+      <button id="generate">Generate</button>
+      <button id="copy">Copy</button>
     </div>
   </div>
 
-  <div class="tab-content" id="vault-tab" style="display:none;">
-    <div class="vault-controls">
-      <div class="row">
-        <label for="masterPass">Master Password:</label>
-        <input type="password" id="masterPass" placeholder="Enter master password">
-        <button id="unlockVault">Unlock Vault</button>
-      </div>
-    </div>
-    <div class="vault-content" id="vaultContent" style="display:none;">
-      <div class="row">
-        <label for="vaultPassword">Password to Check/Add:</label>
-        <input type="text" id="vaultPassword" placeholder="Enter password">
-        <button id="checkAdd">Check & Add</button>
-      </div>
-      <div id="vaultList"></div>
+  <div class="output">
+    <div id="pw" class="password">—</div>
+    <div class="strength-bar"><i id="strengthBar"></i></div>
+    <div id="strengthText">Strength: —</div>
+    <div id="pwnedInfo"></div>
+    <div style="margin-top:8px;">
+      <button id="exportBtn">Export to Bitwarden CSV</button>
     </div>
   </div>
 
@@ -66,7 +44,6 @@
 <div id="toast">Copied!</div>
 
 <script src="wordlist.js"></script>
-<script src="vault.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
