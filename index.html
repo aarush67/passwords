@@ -3,75 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SafePass • Password Utility</title>
+<title>Password Hub — TechFixPro</title>
 <link rel="stylesheet" href="styles.css">
-<script src="https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
 </head>
 <body>
 <div class="container">
-  <h1>SafePass</h1>
-  <p>Generate strong passwords or check your existing ones for breaches and strength.</p>
+  <h1>Password Hub</h1>
+  <p>Generate secure passwords or check your password safety.</p>
 
   <div class="tabs">
-    <button class="tab-btn active" data-tab="generate">Generate Password</button>
-    <button class="tab-btn" data-tab="check">Check Your Password</button>
+    <button class="tab-btn active" data-tab="generate">Generate</button>
+    <button class="tab-btn" data-tab="check">Check</button>
+    <button id="modeToggle">🌙</button>
   </div>
 
-  <!-- Generate Password Tab -->
-  <div class="tab-content" id="generate-tab">
+  <!-- Generate Tab -->
+  <div id="generate-tab">
     <div class="controls">
       <div class="row">
         <label for="mode">Mode:</label>
         <select id="mode">
-          <option value="chars">Random Characters</option>
+          <option value="chars">Characters</option>
           <option value="passphrase">Passphrase</option>
         </select>
       </div>
       <div class="row">
-        <label for="length">Length:</label>
-        <input type="number" id="length" value="16" min="8" max="128">
-      </div>
-      <div class="row buttons">
-        <button id="generate">Generate</button>
-        <button id="copy">Copy</button>
+        <label for="length">Length / Words:</label>
+        <input type="number" id="length" min="4" max="64" value="16">
       </div>
     </div>
+    <div class="buttons">
+      <button id="generate">Generate</button>
+      <button id="copy">Copy</button>
+      <button id="exportBtn">Export CSV</button>
+    </div>
     <div class="output">
-      <div id="pw" class="password">—</div>
-      <div class="strength-bar"><i id="strengthBar"></i></div>
-      <div id="strengthText">Strength: —</div>
-      <div id="pwnedInfo"></div>
-      <div style="margin-top:8px;">
-        <button id="exportBtn">Export to Bitwarden CSV</button>
+      <div class="password-container">
+        <div id="pw" class="password"></div>
+        <div class="tooltip">Click to copy</div>
       </div>
+      <div class="strength-bar"><i id="strengthBar"></i></div>
+      <div id="strengthText"></div>
+      <div id="pwnedInfo"></div>
     </div>
   </div>
 
-  <!-- Check Password Tab -->
-  <div class="tab-content" id="check-tab" style="display:none;">
+  <!-- Check Tab -->
+  <div id="check-tab" style="display:none;">
     <div class="controls">
       <div class="row">
-        <label for="checkInput">Enter Password:</label>
-        <input type="password" id="checkInput" placeholder="Type your password">
+        <label for="checkInput">Enter password:</label>
+        <input type="password" id="checkInput">
       </div>
-      <div class="row buttons">
-        <button id="checkBtn">Check</button>
-        <button id="copyCheckBtn">Copy</button>
-      </div>
+    </div>
+    <div class="buttons">
+      <button id="checkBtn">Check</button>
+      <button id="copyCheckBtn">Copy</button>
     </div>
     <div class="output">
-      <div id="checkPw" class="password">—</div>
+      <div class="password-container">
+        <div id="checkPw" class="password"></div>
+        <div class="tooltip">Click to copy</div>
+      </div>
       <div class="strength-bar"><i id="checkStrengthBar"></i></div>
-      <div id="checkStrengthText">Strength: —</div>
+      <div id="checkStrengthText"></div>
       <div id="checkPwnedInfo"></div>
-      <div id="suggestion" style="margin-top:4px; font-size:0.9rem; color:#ffeb3b;"></div>
+      <div id="suggestion"></div>
     </div>
   </div>
-
 </div>
-<div id="toast">Copied!</div>
 
-<script src="wordlist.js"></script>
+<div id="toast"></div>
+
 <script src="script.js"></script>
 </body>
 </html>
