@@ -76,6 +76,14 @@ const checkStrengthText=document.getElementById("checkStrengthText");
 const checkPwnedInfo=document.getElementById("checkPwnedInfo");
 const suggestion=document.getElementById("suggestion");
 
+// Copy password (button or click on password)
+async function copyText(el){
+  const txt = el.textContent;
+  if(!txt) return;
+  await navigator.clipboard.writeText(txt);
+  toast("Copied!");
+}
+
 // Generate password
 async function generateAndShow(){
   const mode=modeEl.value;
@@ -89,25 +97,19 @@ async function generateAndShow(){
     const score=z.score;
     strengthBar.style.width=((score/4)*100)+'%';
     const labels=['Very weak','Weak','So-so','Good','Excellent'];
-    strengthText.textContent=`Strength: ${labels[score]} • ${Math.round(z.entropy)} bits entropy`;
+    strengthText.innerHTML=`Strength: ${labels[score]} • ${Math.round(z.entropy)} bits`;
   }catch(e){ strengthBar.style.width='0%'; strengthText.textContent='Strength: —'; }
 
   // HIBP
-  pwnedInfo.textContent="Checking breaches…";
+  pwnedInfo.innerHTML=`<span>Checking breaches…</span>`;
   const count=await checkPwned(out);
-  pwnedInfo.textContent=count>0?`⚠️ Appeared in breaches ${count}`:"✅ Not found in HIBP";
+  if(count>0) pwnedInfo.innerHTML=`<svg class="warn"><circle cx="9" cy="9" r="9"/></svg> Appeared in breaches ${count}`;
+  else pwnedInfo.innerHTML=`<svg class="check"><circle cx="9" cy="9" r="9"/></svg> Not found in HIBP`;
 }
 
 generateBtn.addEventListener("click", generateAndShow);
-
-// Copy generated
-copyBtn.addEventListener("click", async ()=>{
-  const txt=pwEl.textContent;
-  if(!txt) return;
-  await navigator.clipboard.writeText(txt);
-  toast("Copied — clears in 15s");
-  setTimeout(()=>{ pwEl.textContent='—'; strengthBar.style.width='0%'; strengthText.textContent='Strength: —'; pwnedInfo.textContent=''; },15000);
-});
+pwEl.addEventListener("click", ()=>copyText(pwEl));
+copyBtn.addEventListener("click", ()=>copyText(pwEl));
 
 // Export CSV
 exportBtn.addEventListener("click", ()=>{
@@ -133,24 +135,19 @@ async function checkPassword(){
   const score=z.score;
   checkStrengthBar.style.width=((score/4)*100)+'%';
   const labels=['Very weak','Weak','So-so','Good','Excellent'];
-  checkStrengthText.textContent=`Strength: ${labels[score]} • ${Math.round(z.entropy)} bits entropy`;
+  checkStrengthText.textContent=`Strength: ${labels[score]} • ${Math.round(z.entropy)} bits`;
 
-  checkPwnedInfo.textContent="Checking breaches…";
+  checkPwnedInfo.innerHTML=`<span>Checking breaches…</span>`;
   const count=await checkPwned(pw);
-  checkPwnedInfo.textContent=count>0?`⚠️ Appeared in breaches ${count}`:"✅ Not found in HIBP";
+  if(count>0) checkPwnedInfo.innerHTML=`<svg class="warn"><circle cx="9" cy="9" r="9"/></svg> Appeared in breaches ${count}`;
+  else checkPwnedInfo.innerHTML=`<svg class="check"><circle cx="9" cy="9" r="9"/></svg> Not found in HIBP`;
 
   suggestion.textContent=z.feedback.warning || z.feedback.suggestions.join(" ") || "No suggestions, strong password!";
 }
 
 checkBtn.addEventListener("click", checkPassword);
-
-// Copy user-entered password
-copyCheckBtn.addEventListener("click", async ()=>{
-  const txt=checkPw.textContent;
-  if(!txt) return;
-  await navigator.clipboard.writeText(txt);
-  toast("Copied!");
-});
+checkPw.addEventListener("click", ()=>copyText(checkPw));
+copyCheckBtn.addEventListener("click", ()=>copyText(checkPw));
 
 // Tabs
 document.querySelectorAll(".tab-btn").forEach(btn=>{
